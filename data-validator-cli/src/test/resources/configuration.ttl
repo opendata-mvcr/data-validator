@@ -1,0 +1,11 @@
+
+<http://localhost/configuration> a <urn:DataValidatorConfiguration> ;
+    <urn:rule> [
+        <urn:pattern> "*.json", "*.jsonld" ;
+        <urn:validator> [
+            a <urn:JacksonJsonSyntax> ;
+       ] ;
+    ] ;
+    <urn:path> "./" ;
+    <urn:recursive> true ;
+.

@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+java {
+    jar {
+        archiveAppendix.set('xml')
+        dependencies {
+            implementation project(":data-validator-core")
+            implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+            implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.1'
+            implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.11.1'
+        }
+    }
+}
