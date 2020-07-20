@@ -5,6 +5,11 @@ plugins {
 
 allprojects {
     version = '1.0.0'
+    repositories  {
+        maven {
+            url "https://jitpack.io"
+        }
+    }
 }
 
 subprojects {
@@ -21,6 +26,7 @@ subprojects {
             archiveBaseName.set('data-validator')
         }
         dependencies {
+            testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
             testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.1'
             testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.1'
             testImplementation group: 'com.tngtech.archunit', name: 'archunit', version: '0.13.1'

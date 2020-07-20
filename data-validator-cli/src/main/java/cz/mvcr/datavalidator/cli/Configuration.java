@@ -1,6 +1,6 @@
 package cz.mvcr.datavalidator.cli;
 
-import cz.mvcr.datavalidator.core.Validator;
+import cz.mvcr.datavalidator.core.DataValidator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Configuration {
         /**
          * Validators to apply.
          */
-        public List<Validator> validators = new ArrayList<>();
+        public List<DataValidator> validators = new ArrayList<>();
 
     }
 

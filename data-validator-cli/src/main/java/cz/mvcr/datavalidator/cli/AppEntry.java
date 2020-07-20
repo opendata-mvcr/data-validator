@@ -1,7 +1,8 @@
 package cz.mvcr.datavalidator.cli;
 
+import cz.mvcr.datavalidator.cli.writer.StdOutReportWriter;
 import cz.mvcr.datavalidator.core.FileReport;
-import cz.mvcr.datavalidator.core.Validator;
+import cz.mvcr.datavalidator.core.DataValidator;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -43,7 +44,7 @@ public class AppEntry {
             return;
         }
         List<FileReport> reports = validateFiles(configuration, files);
-        report(reports);
+        (new StdOutReportWriter()).writeReports(reports);
     }
 
     private CommandLine parseArgs(String[] args) throws ParseException {
@@ -81,8 +82,13 @@ public class AppEntry {
 
     private Configuration loadConfiguration(CommandLine cmd)
             throws IOException {
-        URL url = new URL(cmd.getOptionValue("configuration"));
-        Configuration configuration = ConfigurationAdapter.load(url);
+        Configuration configuration;
+        if (cmd.hasOption("configuration")) {
+            URL url = new URL(cmd.getOptionValue("configuration"));
+            configuration = ConfigurationAdapter.load(url);
+        } else {
+            configuration = ConfigurationAdapter.createDefaultConfiguration();
+        }
         //
         if (cmd.hasOption("file")) {
             configuration.paths.clear();
@@ -131,7 +137,7 @@ public class AppEntry {
                 continue;
             }
             List<FileReport> result = new ArrayList<>();
-            for (Validator validator : rule.validators) {
+            for (DataValidator validator : rule.validators) {
                 validator.validate(file)
                         .stream()
                         .map(report -> FileReport.file(report, file))
@@ -140,23 +146,6 @@ public class AppEntry {
             return result;
         }
         return Collections.emptyList();
-    }
-
-    private void report(List<FileReport> reports) {
-        StringBuilder line = new StringBuilder();
-        for (FileReport report : reports) {
-            line.setLength(0);
-            line.append(report.file.getName());
-            line.append(" [");
-            line.append(report.type);
-            line.append("] ");
-            line.append(report.line);
-            line.append(":");
-            line.append(report.column);
-            line.append(" ");
-            line.append(report.message.replace("\n", ""));
-            System.out.println(line.toString());
-        }
     }
 
 }

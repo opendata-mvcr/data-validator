@@ -1,0 +1,23 @@
+{
+  "fruits": [
+    "apple",
+    "orange",
+    "pear"
+  ],
+  "vegetables": [
+    {
+      "veggieName": "banana"
+    },
+    {
+      "veggieName": "potato",
+      "veggieLike": true
+    },
+    {
+      "veggieName": "broccoli",
+      "veggieLike": false
+    },
+    {
+      "veggieName": "cucumber"
+    }
+  ]
+}

@@ -8,9 +8,11 @@ java {
         dependencies {
             implementation project(":data-validator-core")
             implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+            implementation group: 'org.eclipse.rdf4j', name: 'rdf4j-rio-api', version: '3.2.3'
             implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.1'
             implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.11.1'
             implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.11.1'
+            implementation group: 'com.github.everit-org.json-schema', name: 'org.everit.json.schema', version: '1.12.1'
         }
     }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class JsonSyntaxValidatorTest {
+public class JsonSyntaxJacksonValidatorTest {
 
     @Test
     public void invalidFile000() {

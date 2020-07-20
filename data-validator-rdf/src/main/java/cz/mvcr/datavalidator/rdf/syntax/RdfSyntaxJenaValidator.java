@@ -1,7 +1,8 @@
 package cz.mvcr.datavalidator.rdf.syntax;
 
 import cz.mvcr.datavalidator.core.Report;
-import cz.mvcr.datavalidator.core.Validator;
+import cz.mvcr.datavalidator.core.DataValidator;
+import cz.mvcr.datavalidator.core.ReportFactory;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.RDFParser;
 import org.apache.jena.riot.RiotException;
@@ -13,7 +14,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RdfSyntaxJenaValidator implements Validator {
+public class RdfSyntaxJenaValidator implements DataValidator {
+
+    private static final ReportFactory reportFactory =
+            ReportFactory.getInstance(RdfSyntaxJenaValidator.class);
 
     @Override
     public List<Report> validate(File file) {
@@ -22,10 +26,10 @@ public class RdfSyntaxJenaValidator implements Validator {
             RDFParser.create()
                     .source(stream)
                     .lang(RDFLanguages.filenameToLang(file.getName()))
-                    .errorHandler(new ReportCollector(result))
+                    .errorHandler(new ReportCollector(reportFactory, result))
                     .parse(new NoWhereStreamRDF());
         } catch (IOException ex) {
-            result.add(Report.error(ex.getMessage()));
+            result.add(reportFactory.error(ex.getMessage()));
         } catch (RiotException ex) {
             // We already deal with this in the error handler.
         }

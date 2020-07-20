@@ -1,14 +1,14 @@
 package cz.mvcr.datavalidator.cli;
 
-import cz.mvcr.datavalidator.core.Validator;
+import cz.mvcr.datavalidator.core.DataValidator;
 
 public class FileValidator {
 
     private final String pattern;
 
-    private final Validator validator;
+    private final DataValidator validator;
 
-    public FileValidator(String pattern, Validator validator) {
+    public FileValidator(String pattern, DataValidator validator) {
         this.pattern = pattern;
         this.validator = validator;
     }
@@ -17,7 +17,7 @@ public class FileValidator {
         return pattern;
     }
 
-    public Validator getValidator() {
+    public DataValidator getValidator() {
         return validator;
     }
 

@@ -1,4 +1,4 @@
-package cz.mvcr.datavalidator.cli;
+package cz.mvcr.datavalidator.core;
 
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.rio.RDFFormat;

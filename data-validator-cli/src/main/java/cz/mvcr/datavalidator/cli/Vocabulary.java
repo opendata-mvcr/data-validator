@@ -31,4 +31,15 @@ public class Vocabulary {
     public static final String JenaRdfSyntax =
             prefix + "JenaRdfSyntax";
 
+    public static final String EveritJsonSchema =
+            prefix + "EveritJsonSchema";
+
+    public static final String XercesXmlSchema =
+            prefix + "XercesXmlSchema";
+
+
+    public static final String JenaRdfSchaclSchema =
+            prefix + "JenaRdfSchaclSchema";
+
+
 }

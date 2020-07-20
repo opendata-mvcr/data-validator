@@ -1,6 +1,11 @@
 package cz.mvcr.datavalidator.cli;
 
-import cz.mvcr.datavalidator.core.Validator;
+import cz.mvcr.datavalidator.core.RdfAdapter;
+import cz.mvcr.datavalidator.core.DataValidator;
+import cz.mvcr.datavalidator.json.syntax.JsonSyntaxJacksonValidator;
+import cz.mvcr.datavalidator.rdf.syntax.RdfSyntaxJenaValidator;
+import cz.mvcr.datavalidator.xml.schema.XmlSchemaXercesValidator;
+import cz.mvcr.datavalidator.xml.syntax.XmlSyntaxJacksonValidator;
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
@@ -10,6 +15,7 @@ import org.eclipse.rdf4j.model.vocabulary.RDF;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +47,7 @@ public class ConfigurationAdapter {
         return configurations.get(0);
     }
 
-    private final Map<Resource, Validator> validatorMap = new HashMap<>();
+    private final Map<Resource, DataValidator> validatorMap = new HashMap<>();
 
 
     private Configuration onConfiguration(
@@ -102,7 +108,7 @@ public class ConfigurationAdapter {
             List<Statement> statements) throws IOException {
         Resource resource = (Resource) statement.getObject();
         if (!validatorMap.containsKey(resource)) {
-            Validator validator = ValidatorFactory.createValidator(
+            DataValidator validator = ValidatorFactory.createValidator(
                     resource, statements);
             if (validator == null) {
                 throw new IOException(
@@ -119,6 +125,31 @@ public class ConfigurationAdapter {
         Resource resource = getConfiguration(statements);
         return (new ConfigurationAdapter())
                 .onConfiguration(resource, statements);
+    }
+
+    public static Configuration createDefaultConfiguration() {
+        Configuration result = new Configuration();
+        result.paths = Collections.singletonList(new File("./"));
+        result.recursive = true;
+
+        Configuration.Rule jsonRule = new Configuration.Rule();
+        jsonRule.filePatterns.add(".*.json");
+        jsonRule.validators.add(new JsonSyntaxJacksonValidator());
+        result.rules.add(jsonRule);
+
+        Configuration.Rule xmlRule = new Configuration.Rule();
+        xmlRule.filePatterns.add(".*.xml");
+        xmlRule.validators.add(new XmlSyntaxJacksonValidator());
+        xmlRule.validators.add(new XmlSchemaXercesValidator());
+        result.rules.add(xmlRule);
+
+        Configuration.Rule rdfRule = new Configuration.Rule();
+        rdfRule.filePatterns.add(".*.ttl");
+        rdfRule.filePatterns.add(".*.jsonld");
+        rdfRule.validators.add(new RdfSyntaxJenaValidator());
+        result.rules.add(rdfRule);
+
+        return result;
     }
 
 }

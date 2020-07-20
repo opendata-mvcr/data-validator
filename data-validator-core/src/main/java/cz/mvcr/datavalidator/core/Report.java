@@ -7,6 +7,8 @@ public class Report {
         WARNING
     }
 
+    public final String validator;
+
     public final Integer line;
 
     public final Integer column;
@@ -15,23 +17,14 @@ public class Report {
 
     public final Type type;
 
-    protected Report(Integer line, Integer column, String message, Type type) {
+    public Report(
+            String validator,
+            Integer line, Integer column, String message, Type type) {
+        this.validator = validator;
         this.line = line;
         this.column = column;
         this.message = message;
         this.type = type;
-    }
-
-    public static Report error(String message) {
-        return new Report(null, null, message, Type.ERROR);
-    }
-
-    public static Report error(String message, Integer line, Integer column) {
-        return new Report(line, column, message, Type.ERROR);
-    }
-
-    public static Report warn(String message, Integer line, Integer column) {
-        return new Report(line, column, message, Type.WARNING);
     }
 
 }
