@@ -1,0 +1,16 @@
+name: 'Data Validator'
+description: 'Validate data files.'
+inputs:
+  configuration:
+    description: 'URL of the configuration.'
+    required: true
+  path:
+    description: 'Path to file or a directory.'
+    required: false
+    default: '/github/workspace'
+runs:
+  using: 'docker'
+  image: '../Dockerfile'
+  args:
+    - -c ${{ inputs.configuration }}
+    - -p ${{ inputs.path }}
