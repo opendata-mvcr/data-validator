@@ -56,7 +56,7 @@ public class AppEntry {
         options.addOption(configuration);
 
         Option file = new Option(
-                "f", "file", true, "Input file or directory..");
+                "p", "path", true, "Input file or directory.");
         file.setRequired(false);
         options.addOption(file);
 
@@ -90,9 +90,9 @@ public class AppEntry {
             configuration = ConfigurationAdapter.createDefaultConfiguration();
         }
         //
-        if (cmd.hasOption("file")) {
+        if (cmd.hasOption("path")) {
             configuration.paths.clear();
-            configuration.paths.add(new File(cmd.getOptionValue("file")));
+            configuration.paths.add(new File(cmd.getOptionValue("path")));
         }
         if (cmd.hasOption("recursive")) {
             configuration.recursive = true;
