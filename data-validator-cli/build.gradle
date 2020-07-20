@@ -5,6 +5,8 @@ plugins {
 
 java {
     jar {
+        println("jar.destinationDir = " + destinationDir)
+
         archiveAppendix.set('cli')
         dependencies {
             implementation project(":data-validator-core")
@@ -24,3 +26,8 @@ java {
 application {
     mainClassName = 'cz.mvcr.datavalidator.cli.AppEntry'
 }
+
+installDist {
+    into "${project.rootDir}/dist"
+}
+

@@ -1,0 +1,7 @@
+#
+* text eol=lf
+
+#
+.*
+build/
+dist/
