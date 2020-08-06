@@ -28,6 +28,7 @@ public class AppEntry {
     private static final Logger LOG = LoggerFactory.getLogger(AppEntry.class);
 
     public static void main(String[] args) {
+        LOG.info("Running version 2242");
         try {
             (new AppEntry()).run(args);
         } catch (Throwable t) {
@@ -51,6 +52,7 @@ public class AppEntry {
         try {
             files = listFiles(configuration);
         } catch (IOException ex) {
+            LOG.info("Can't list files.", ex);
             System.out.println(ex.getMessage());
             return;
         }
