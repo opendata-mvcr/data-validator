@@ -28,7 +28,11 @@ public class AppEntry {
     private static final Logger LOG = LoggerFactory.getLogger(AppEntry.class);
 
     public static void main(String[] args) {
-        (new AppEntry()).run(args);
+        try {
+            (new AppEntry()).run(args);
+        } catch (Throwable t) {
+            LOG.error("Throwable", t);
+        }
     }
 
     protected void run(String[] args) {
