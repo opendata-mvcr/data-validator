@@ -42,6 +42,7 @@ public class AppEntry {
             System.out.println(ex.getMessage());
             return;
         }
+        LOG.info("Paths: {}", asString(configuration.paths, " "));
         List<File> files;
         try {
             files = listFiles(configuration);
@@ -49,8 +50,17 @@ public class AppEntry {
             System.out.println(ex.getMessage());
             return;
         }
+        LOG.info("Files: {}", asString(files, "\n"));
         List<FileReport> reports = validateFiles(configuration, files);
         (new StdOutReportWriter()).writeReports(reports);
+    }
+
+    private <T> String asString(List<T> args, String separator) {
+        StringBuilder result = new StringBuilder();
+        for (Object arg : args) {
+            result.append(separator).append(arg.toString());
+        }
+        return result.toString();
     }
 
     private CommandLine parseArgs(String[] args) throws ParseException {
