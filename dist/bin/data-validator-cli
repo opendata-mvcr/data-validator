@@ -22,6 +22,8 @@
 ##
 ##############################################################################
 
+echo "Running data-validator-cli"
+
 # Attempt to set APP_HOME
 # Resolve links: $0 may be a link
 PRG="$0"
@@ -181,5 +183,7 @@ APP_ARGS=`save "$@"`
 
 # Collect all arguments for the java command, following the shell quoting and substitution rules
 eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $DATA_VALIDATOR_CLI_OPTS -classpath "\"$CLASSPATH\"" cz.mvcr.datavalidator.cli.AppEntry "$APP_ARGS"
+
+echo "Running $JAVACMD $@"
 
 exec "$JAVACMD" "$@"
