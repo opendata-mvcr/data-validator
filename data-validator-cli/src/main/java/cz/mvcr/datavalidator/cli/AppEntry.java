@@ -10,6 +10,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +25,15 @@ import java.util.stream.Stream;
 
 public class AppEntry {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AppEntry.class);
+
     public static void main(String[] args) {
         (new AppEntry()).run(args);
     }
 
     protected void run(String[] args) {
+        LOG.info("Running with arguments: {}", String.join(" ", args));
+        //
         Configuration configuration;
         try {
             CommandLine commandLine = parseArgs(args);
