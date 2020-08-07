@@ -28,50 +28,35 @@ public class AppEntry {
     private static final Logger LOG = LoggerFactory.getLogger(AppEntry.class);
 
     public static void main(String[] args) {
-        LOG.info("Running version 757");
         try {
             (new AppEntry()).run(args);
         } catch (Throwable t) {
-            LOG.error("Throwable", t);
+            LOG.error("Unexpected execution failure.", t);
+            System.exit(1);
         }
     }
 
     protected void run(String[] args) {
-        LOG.info("Running with arguments: {}", String.join(" ", args));
         //
         Configuration configuration;
         try {
             CommandLine commandLine = parseArgs(args);
             configuration = loadConfiguration(commandLine);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Can't load configuration.");
+            System.exit(1);
             return;
         }
-        LOG.info("Paths: {}", asString(configuration.paths, " "));
         List<File> files;
         try {
             files = listFiles(configuration);
         } catch (IOException ex) {
-            LOG.info("Can't list files.", ex);
-            System.out.println(ex.getMessage());
+            System.out.println("Can't list files.");
+            System.exit(1);
             return;
         }
-        LOG.info("Files: {}", asString(files, "\n"));
         List<FileReport> reports = validateFiles(configuration, files);
         (new StdOutReportWriter()).writeReports(reports);
-    }
-
-    private <T> String asString(List<T> args, String separator) {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-        for (Object arg : args) {
-            if (!first) {
-                result.append(separator);
-            }
-            result.append('"').append(arg.toString()).append('"');
-            first = false;
-        }
-        return result.toString();
     }
 
     private CommandLine parseArgs(String[] args) throws ParseException {
@@ -135,11 +120,9 @@ public class AppEntry {
         List<File> result = new ArrayList<>();
         for (File file : configuration.paths) {
             if (!file.isDirectory()) {
-                LOG.info("File: \"{}\"", file);
                 result.add(file);
                 continue;
             }
-            LOG.info("Directory: \"{}\"", file);
             int depth = configuration.recursive ? Integer.MAX_VALUE : 1;
             try (Stream<Path> paths = Files.walk(file.toPath(), depth)) {
                 paths.filter(Files::isRegularFile)
