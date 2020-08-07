@@ -28,7 +28,7 @@ public class AppEntry {
     private static final Logger LOG = LoggerFactory.getLogger(AppEntry.class);
 
     public static void main(String[] args) {
-        LOG.info("Running version 2242");
+        LOG.info("Running version 757");
         try {
             (new AppEntry()).run(args);
         } catch (Throwable t) {
@@ -135,11 +135,11 @@ public class AppEntry {
         List<File> result = new ArrayList<>();
         for (File file : configuration.paths) {
             if (!file.isDirectory()) {
-                LOG.info("File: {}", file);
+                LOG.info("File: \"{}\"", file);
                 result.add(file);
                 continue;
             }
-            LOG.info("Directory: {}", file);
+            LOG.info("Directory: \"{}\"", file);
             int depth = configuration.recursive ? Integer.MAX_VALUE : 1;
             try (Stream<Path> paths = Files.walk(file.toPath(), depth)) {
                 paths.filter(Files::isRegularFile)
