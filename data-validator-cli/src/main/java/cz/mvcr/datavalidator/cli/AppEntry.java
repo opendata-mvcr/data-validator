@@ -29,34 +29,41 @@ public class AppEntry {
 
     public static void main(String[] args) {
         try {
-            (new AppEntry()).run(args);
+            int returnCode = (new AppEntry()).run(args);
+            System.exit(returnCode);
         } catch (Throwable t) {
             LOG.error("Unexpected execution failure.", t);
             System.exit(1);
         }
     }
 
-    protected void run(String[] args) {
-        //
+    protected int run(String[] args) {
         Configuration configuration;
         try {
             CommandLine commandLine = parseArgs(args);
             configuration = loadConfiguration(commandLine);
         } catch (Exception ex) {
             System.out.println("Can't load configuration.");
-            System.exit(1);
-            return;
+            return 1;
+        }
+        for (File file : configuration.paths) {
+            if (file.exists()) {
+                continue;
+            }
+            System.out.println(
+                    "Input path does not exists \"" + file.toString() + "\"");
+            return 1;
         }
         List<File> files;
         try {
             files = listFiles(configuration);
         } catch (IOException ex) {
             System.out.println("Can't list files.");
-            System.exit(1);
-            return;
+            return 1;
         }
         List<FileReport> reports = validateFiles(configuration, files);
         (new StdOutReportWriter()).writeReports(reports);
+        return reports.size() > 0 ? 1 : 0;
     }
 
     private CommandLine parseArgs(String[] args) throws ParseException {
