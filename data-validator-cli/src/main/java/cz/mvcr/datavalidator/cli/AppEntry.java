@@ -63,8 +63,13 @@ public class AppEntry {
 
     private <T> String asString(List<T> args, String separator) {
         StringBuilder result = new StringBuilder();
+        boolean first = true;
         for (Object arg : args) {
-            result.append(separator).append(arg.toString());
+            if (!first) {
+                result.append(separator);
+            }
+            result.append('"').append(arg.toString()).append('"');
+            first = false;
         }
         return result.toString();
     }
@@ -130,8 +135,11 @@ public class AppEntry {
         List<File> result = new ArrayList<>();
         for (File file : configuration.paths) {
             if (!file.isDirectory()) {
+                LOG.info("File: {}", file);
                 result.add(file);
+                continue;
             }
+            LOG.info("Directory: {}", file);
             int depth = configuration.recursive ? Integer.MAX_VALUE : 1;
             try (Stream<Path> paths = Files.walk(file.toPath(), depth)) {
                 paths.filter(Files::isRegularFile)
