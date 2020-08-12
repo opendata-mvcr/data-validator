@@ -12,7 +12,7 @@ public class StdOutReportWriter {
             line.setLength(0);
             line.append(report.validator);
             line.append(" ");
-            line.append(report.file.getName());
+            line.append(report.relativePath.toString());
             line.append(" [");
             line.append(report.type);
             line.append("] ");

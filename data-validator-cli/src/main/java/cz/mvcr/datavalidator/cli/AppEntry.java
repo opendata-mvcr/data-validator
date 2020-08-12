@@ -2,7 +2,6 @@ package cz.mvcr.datavalidator.cli;
 
 import cz.mvcr.datavalidator.cli.writer.StdOutReportWriter;
 import cz.mvcr.datavalidator.core.FileReport;
-import cz.mvcr.datavalidator.core.DataValidator;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -16,12 +15,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class AppEntry {
 
@@ -46,22 +41,11 @@ public class AppEntry {
             System.out.println("Can't load configuration.");
             return 1;
         }
+        List<FileReport> reports = new ArrayList<>();
+        FileValidator validator = new FileValidator(configuration);
         for (File file : configuration.paths) {
-            if (file.exists()) {
-                continue;
-            }
-            System.out.println(
-                    "Input path does not exists \"" + file.toString() + "\"");
-            return 1;
+            reports.addAll(validator.validateFile(file));
         }
-        List<File> files;
-        try {
-            files = listFiles(configuration);
-        } catch (IOException ex) {
-            System.out.println("Can't list files.");
-            return 1;
-        }
-        List<FileReport> reports = validateFiles(configuration, files);
         (new StdOutReportWriter()).writeReports(reports);
         return reports.size() > 0 ? 1 : 0;
     }
@@ -122,50 +106,6 @@ public class AppEntry {
         return configuration;
     }
 
-    private List<File> listFiles(Configuration configuration)
-            throws IOException {
-        List<File> result = new ArrayList<>();
-        for (File file : configuration.paths) {
-            if (!file.isDirectory()) {
-                result.add(file);
-                continue;
-            }
-            int depth = configuration.recursive ? Integer.MAX_VALUE : 1;
-            try (Stream<Path> paths = Files.walk(file.toPath(), depth)) {
-                paths.filter(Files::isRegularFile)
-                        .map(Path::toFile)
-                        .forEach(result::add);
-            }
-        }
-        return result;
-    }
 
-    private List<FileReport> validateFiles(
-            Configuration configuration, List<File> files) {
-        List<FileReport> result = new ArrayList<>();
-        for (Configuration.Rule rule : configuration.rules) {
-            for (File file : files) {
-                result.addAll(validateFile(rule, file));
-            }
-        }
-        return result;
-    }
-
-    private List<FileReport> validateFile(Configuration.Rule rule, File file) {
-        for (String filePattern : rule.filePatterns) {
-            if (!file.getAbsolutePath().matches(filePattern)) {
-                continue;
-            }
-            List<FileReport> result = new ArrayList<>();
-            for (DataValidator validator : rule.validators) {
-                validator.validate(file)
-                        .stream()
-                        .map(report -> FileReport.file(report, file))
-                        .forEach(result::add);
-            }
-            return result;
-        }
-        return Collections.emptyList();
-    }
 
 }
