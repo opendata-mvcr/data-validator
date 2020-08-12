@@ -25,4 +25,12 @@ public class XmlSyntaxValidatorTest {
         Assertions.assertEquals(1, actual.size());
     }
 
+    @Test
+    public void validFile000() {
+        XmlSyntaxJacksonValidator validator = new XmlSyntaxJacksonValidator();
+        List<Report> actual = validator.validate(
+                TestUtils.fileFromResource("syntax/valid-000.xml"));
+        Assertions.assertEquals(1, actual.size());
+    }
+
 }

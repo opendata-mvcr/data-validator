@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import cz.mvcr.datavalidator.core.Report;
 import cz.mvcr.datavalidator.core.DataValidator;
 import cz.mvcr.datavalidator.core.ReportFactory;
@@ -20,15 +21,19 @@ public class XmlSyntaxJacksonValidator implements DataValidator {
 
     @Override
     public List<Report> validate(File file) {
-        ObjectMapper mapper = new ObjectMapper();
+        XmlMapper mapper = new XmlMapper();
         Object value;
         try {
             value = mapper.readTree(file);
         } catch (JsonParseException ex) {
             JsonLocation location = ex.getLocation();
             String message = ex.getMessage();
-            return Collections.singletonList(reportFactory.error(
-                    message, location.getLineNr(), location.getColumnNr()));
+            if (location == null) {
+                return Collections.singletonList(reportFactory.error(message));
+            } else {
+                return Collections.singletonList(reportFactory.error(
+                        message, location.getLineNr(), location.getColumnNr()));
+            }
         } catch (IOException ex) {
             return Collections.singletonList(
                     reportFactory.error(ex.getMessage()));

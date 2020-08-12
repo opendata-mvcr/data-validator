@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<adresa>
+    <základ:rozšiřující_položky>
+        <x:poznámka>dole u řeky</x:poznámka>
+    </základ:rozšiřující_položky>
+    <název_obce xml:lang="cs">Horní Datová</název_obce>
+    <název_ulice xml:lang="cs">Hlavní</název_ulice>
+    <číslo_domovní>12</číslo_domovní>
+    <typ_čísla_domovního>č.p.</typ_čísla_domovního>
+    <psč>33101</psč>
+</adresa>
