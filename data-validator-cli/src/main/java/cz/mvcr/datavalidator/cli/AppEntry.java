@@ -13,8 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -39,6 +43,7 @@ public class AppEntry {
     }
 
     protected int run(String[] args) {
+        setUtf8OutputEncoding();
         Configuration configuration;
         try {
             CommandLine commandLine = parseArgs(args);
@@ -56,6 +61,13 @@ public class AppEntry {
         LOG.debug("Validation completed.");
         (new StdOutReportWriter()).writeReports(reports);
         return reports.size() > 0 ? 1 : 0;
+    }
+
+    private void setUtf8OutputEncoding() {
+        System.setOut(new PrintStream(
+                new FileOutputStream(FileDescriptor.out),
+                true,
+                StandardCharsets.UTF_8));
     }
 
     private CommandLine parseArgs(String[] args) throws ParseException {
