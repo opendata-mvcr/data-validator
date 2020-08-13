@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +39,7 @@ public class FileValidator {
             ));
         }
         List<File> files;
+        LOG.debug("Listing files in '{}'", file);
         try {
             files = listFiles(file);
         } catch (IOException ex) {
@@ -80,7 +83,12 @@ public class FileValidator {
             }
             List<Report> result = new ArrayList<>();
             for (DataValidator validator : rule.validators) {
+                Instant start = Instant.now();
                 result.addAll(validator.validate(file));
+                LOG.debug("Validation of '{}' with '{}' done in {} ms",
+                        file, validator.getClass().getSimpleName(),
+                        Duration.between(start, Instant.now()).toMillis());
+
             }
             return result;
         }

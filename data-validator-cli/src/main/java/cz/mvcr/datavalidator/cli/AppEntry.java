@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +25,17 @@ public class AppEntry {
     private static final Logger LOG = LoggerFactory.getLogger(AppEntry.class);
 
     public static void main(String[] args) {
+        Instant start = Instant.now();
+        int returnCode;
         try {
-            int returnCode = (new AppEntry()).run(args);
-            System.exit(returnCode);
+            returnCode = (new AppEntry()).run(args);
         } catch (Throwable t) {
             LOG.error("Unexpected execution failure.", t);
-            System.exit(1);
+            returnCode = 1;
         }
+        LOG.debug("Execution finished in {} s",
+                Duration.between(start, Instant.now()).toSeconds());
+        System.exit(returnCode);
     }
 
     protected int run(String[] args) {
@@ -44,8 +50,10 @@ public class AppEntry {
         List<FileReport> reports = new ArrayList<>();
         FileValidator validator = new FileValidator(configuration);
         for (File file : configuration.paths) {
+            LOG.debug("Validating input '{}'", file);
             reports.addAll(validator.validateFile(file));
         }
+        LOG.debug("Validation completed.");
         (new StdOutReportWriter()).writeReports(reports);
         return reports.size() > 0 ? 1 : 0;
     }
@@ -105,7 +113,6 @@ public class AppEntry {
         }
         return configuration;
     }
-
 
 
 }

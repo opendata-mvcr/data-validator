@@ -20,7 +20,7 @@ public class JsonLdSyntaxTitaniumValidator implements DataValidator {
     @Override
     public List<Report> validate(File file) {
         try {
-            JsonLd.toRdf(file.toURI()).get();
+            JsonLd.expand(file.toURI()).get();
         } catch (JsonLdError ex) {
             return onException(ex);
         }
