@@ -11,6 +11,9 @@ java {
             implementation group: 'org.eclipse.rdf4j', name: 'rdf4j-rio-api', version: '3.2.3'
             implementation group: 'org.apache.jena', name: 'jena-tdb', version: '3.15.0'
             implementation group: 'org.apache.jena', name: 'jena-shacl', version: '3.15.0'
+            implementation group: 'com.apicatalog', name: 'titanium-json-ld', version: '0.8.4'
+            // Required by titanium-json-ld
+            implementation group: 'org.glassfish', name: 'jakarta.json', version: '1.1.6'
         }
     }
 }

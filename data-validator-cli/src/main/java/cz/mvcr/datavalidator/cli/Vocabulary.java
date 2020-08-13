@@ -41,5 +41,7 @@ public class Vocabulary {
     public static final String JenaRdfSchaclSchema =
             prefix + "JenaRdfSchaclSchema";
 
+    public static final String TitaniumJsonLdSyntax =
+            prefix + "TitaniumJsonLdSyntax";
 
 }

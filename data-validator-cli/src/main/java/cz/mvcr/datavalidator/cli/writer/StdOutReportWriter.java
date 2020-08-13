@@ -20,7 +20,7 @@ public class StdOutReportWriter {
             line.append(":");
             line.append(report.column);
             line.append(" ");
-            line.append(report.message.replace("\n", ""));
+            line.append(report.message.replace("\n", "").replace("\r", ""));
             System.out.println(line.toString());
         }
     }
