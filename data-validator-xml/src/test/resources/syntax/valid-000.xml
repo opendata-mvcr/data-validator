@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<adresa>
+<adresa xmlns:základ="https://ofn.gov.cz/základní-datové-typy/2020-07-01">
     <základ:rozšiřující_položky>
-        <x:poznámka>dole u řeky</x:poznámka>
     </základ:rozšiřující_položky>
     <název_obce xml:lang="cs">Horní Datová</název_obce>
     <název_ulice xml:lang="cs">Hlavní</název_ulice>

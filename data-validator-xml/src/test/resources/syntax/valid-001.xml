@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V5.0//EN" "http://www.oasis-open.org/docbook/xml/5.0/docbook.dtd">-->
+<article xmlns='http://docbook.org/ns/docbook'>
+    <info>
+        <abstract>
+            A
+            <a>A</a>
+        </abstract>
+        <section id="příklady">
+            <example>
+                <title></title>
+                <annotation></annotation>
+                <programlisting>{
+                    }</programlisting>
+            </example>
+        </section>
+    </info>
+</article>
