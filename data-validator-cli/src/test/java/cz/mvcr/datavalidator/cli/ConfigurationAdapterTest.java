@@ -15,9 +15,6 @@ public class ConfigurationAdapterTest {
         Assertions.assertEquals(new File("./"), configuration.paths.get(0));
         Assertions.assertTrue(configuration.recursive);
         Assertions.assertEquals(3, configuration.rules.size());
-        for (Configuration.Rule rule : configuration.rules) {
-            Assertions.assertEquals(2, rule.filePatterns.size());
-        }
     }
 
 }
