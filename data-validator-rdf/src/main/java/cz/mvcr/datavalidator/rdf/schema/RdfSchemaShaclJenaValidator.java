@@ -6,20 +6,14 @@ import cz.mvcr.datavalidator.core.Report;
 import cz.mvcr.datavalidator.core.ReportFactory;
 import cz.mvcr.datavalidator.rdf.syntax.JsonLdTitaniumLoader;
 import org.apache.jena.graph.Graph;
-import org.apache.jena.graph.GraphUtil;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
-import org.apache.jena.mem.GraphMem;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.shacl.ShaclValidator;
 import org.apache.jena.shacl.Shapes;
 import org.apache.jena.shacl.ValidationReport;
 import org.apache.jena.shacl.engine.constraint.ShNode;
 import org.apache.jena.shacl.parser.Constraint;
-import org.apache.jena.shacl.parser.Shape;
 import org.apache.jena.shacl.validation.ReportEntry;
 import org.apache.jena.shacl.validation.Severity;
 import org.apache.jena.sparql.core.Prologue;
@@ -122,7 +116,7 @@ public class RdfSchemaShaclJenaValidator implements ConfigurableValidator {
         String message =
                 "Constraints " + String.join(" ", getShapeDescriptions(entry))
                         + " dos not hold for "
-                        + "<" + focus + "> <" + path + "> " + value + " .";
+                        + "<" + focus + "> " + path + " " + value + " .";
         return reportFactory.message(type, message);
     }
 
