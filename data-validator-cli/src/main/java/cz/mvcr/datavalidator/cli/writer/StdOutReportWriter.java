@@ -16,9 +16,9 @@ public class StdOutReportWriter {
             line.append(" [");
             line.append(report.type);
             line.append("] ");
-            line.append(report.line);
+            line.append(report.line == null ? "0" : report.line);
             line.append(":");
-            line.append(report.column);
+            line.append(report.column == null ? "0" : report.column);
             line.append(" ");
             line.append(report.message.replace("\n", "").replace("\r", ""));
             System.out.println(line.toString());
