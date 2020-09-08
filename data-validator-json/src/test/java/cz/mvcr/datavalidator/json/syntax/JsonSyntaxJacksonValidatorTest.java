@@ -33,4 +33,12 @@ public class JsonSyntaxJacksonValidatorTest {
         Assertions.assertEquals(1, actual.size());
     }
 
+    @Test
+    public void issue004() {
+        JsonSyntaxJacksonValidator validator = new JsonSyntaxJacksonValidator();
+        List<Report> actual = validator.validate(
+                TestUtils.fileFromResource("syntax/issue-004.json"));
+        Assertions.assertEquals(1, actual.size());
+    }
+
 }

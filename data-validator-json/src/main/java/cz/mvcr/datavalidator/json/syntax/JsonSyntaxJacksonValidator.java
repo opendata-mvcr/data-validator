@@ -2,6 +2,7 @@ package cz.mvcr.datavalidator.json.syntax;
 
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
 import cz.mvcr.datavalidator.core.Report;
@@ -21,6 +22,7 @@ public class JsonSyntaxJacksonValidator implements DataValidator {
     @Override
     public List<Report> validate(File file) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
         Object value;
         try {
             value = mapper.readTree(file);
