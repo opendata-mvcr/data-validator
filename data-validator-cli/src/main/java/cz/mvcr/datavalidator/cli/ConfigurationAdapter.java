@@ -5,7 +5,7 @@ import cz.mvcr.datavalidator.core.DataValidator;
 import cz.mvcr.datavalidator.json.syntax.JsonSyntaxJacksonValidator;
 import cz.mvcr.datavalidator.rdf.syntax.RdfSyntaxJenaValidator;
 import cz.mvcr.datavalidator.xml.schema.XmlSchemaXercesValidator;
-import cz.mvcr.datavalidator.xml.syntax.XmlSyntaxJacksonValidator;
+import cz.mvcr.datavalidator.xml.syntax.XmlSyntaxDom4jValidator;
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
@@ -139,7 +139,7 @@ public class ConfigurationAdapter {
 
         Configuration.Rule xmlRule = new Configuration.Rule();
         xmlRule.filePatterns.add(".*.xml");
-        xmlRule.validators.add(new XmlSyntaxJacksonValidator());
+        xmlRule.validators.add(new XmlSyntaxDom4jValidator());
         xmlRule.validators.add(new XmlSchemaXercesValidator());
         result.rules.add(xmlRule);
 

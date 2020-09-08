@@ -25,8 +25,8 @@ public class Vocabulary {
     public static final String JacksonJsonSyntax =
             prefix + "JacksonJsonSyntax";
 
-    public static final String JacksonXmlSyntax =
-            prefix + "JacksonXmlSyntax";
+    public static final String Dom4jXmlSyntax =
+            prefix + "Dom4jXmlSyntax";
 
     public static final String JenaRdfSyntax =
             prefix + "JenaRdfSyntax";
@@ -41,5 +41,7 @@ public class Vocabulary {
     public static final String JenaRdfSchaclSchema =
             prefix + "JenaRdfSchaclSchema";
 
+    public static final String TitaniumJsonLdSyntax =
+            prefix + "TitaniumJsonLdSyntax";
 
 }

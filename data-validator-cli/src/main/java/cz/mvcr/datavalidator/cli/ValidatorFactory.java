@@ -4,9 +4,10 @@ import cz.mvcr.datavalidator.core.DataValidator;
 import cz.mvcr.datavalidator.json.schema.JsonSchemaEveritValidator;
 import cz.mvcr.datavalidator.json.syntax.JsonSyntaxJacksonValidator;
 import cz.mvcr.datavalidator.rdf.schema.RdfSchemaShaclJenaValidator;
+import cz.mvcr.datavalidator.rdf.syntax.JsonLdSyntaxTitaniumValidator;
 import cz.mvcr.datavalidator.rdf.syntax.RdfSyntaxJenaValidator;
 import cz.mvcr.datavalidator.xml.schema.XmlSchemaXercesValidator;
-import cz.mvcr.datavalidator.xml.syntax.XmlSyntaxJacksonValidator;
+import cz.mvcr.datavalidator.xml.syntax.XmlSyntaxDom4jValidator;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
@@ -32,8 +33,8 @@ public class ValidatorFactory {
             switch (type) {
                 case Vocabulary.JacksonJsonSyntax:
                     return createJacksonJsonSyntax();
-                case Vocabulary.JacksonXmlSyntax:
-                    return createJacksonXmlSyntax();
+                case Vocabulary.Dom4jXmlSyntax:
+                    return createDom4jXmlSyntax();
                 case Vocabulary.JenaRdfSyntax:
                     return createJenaRdfSyntax();
                 case Vocabulary.EveritJsonSchema:
@@ -42,6 +43,8 @@ public class ValidatorFactory {
                     return createXercesXmlSchema(resource, statements);
                 case Vocabulary.JenaRdfSchaclSchema:
                     return createJenaSchemaShacl(resource, statements);
+                case Vocabulary.TitaniumJsonLdSyntax:
+                    return createTitaniumJsonLdSyntax();
                 default:
                     break;
             }
@@ -53,8 +56,8 @@ public class ValidatorFactory {
         return new JsonSyntaxJacksonValidator();
     }
 
-    private static DataValidator createJacksonXmlSyntax() {
-        return new XmlSyntaxJacksonValidator();
+    private static DataValidator createDom4jXmlSyntax() {
+        return new XmlSyntaxDom4jValidator();
     }
 
     private static DataValidator createJenaRdfSyntax() {
@@ -81,4 +84,9 @@ public class ValidatorFactory {
         validator.configure(resource, statements);
         return validator;
     }
+
+    private static DataValidator createTitaniumJsonLdSyntax() {
+        return new JsonLdSyntaxTitaniumValidator();
+    }
+
 }

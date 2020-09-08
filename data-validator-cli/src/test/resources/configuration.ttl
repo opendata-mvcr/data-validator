@@ -16,17 +16,11 @@
     ], [
          <urn:pattern> "*.ttl", "*.jsonld" ;
          <urn:validator>
-            [ a <urn:JenaRdfSyntax> ; ],
-            [ a <urn:JenaRdfSchaclSchema> ;
-                <urn:shaclUrl> <http://skoda.projekty.ms.mff.cuni.cz/www/temp/shacl-000.ttl> ;
-            ]
+            [ a <urn:JenaRdfSyntax> ; ] ;
     ], [
          <urn:pattern> "*.xml" ;
          <urn:validator>
-            [ a <urn:JacksonXmlSyntax> ; ],
-            [ a <urn:XercesXmlSchema> ;
-                <urn:schemaUrl> <http://skoda.projekty.ms.mff.cuni.cz/www/temp/schema-000.xsd> ;
-            ]
+            [ a <urn:Dom4jXmlSyntax> ; ] ;
     ] ;
     <urn:path> "./" ;
     <urn:recursive> true ;

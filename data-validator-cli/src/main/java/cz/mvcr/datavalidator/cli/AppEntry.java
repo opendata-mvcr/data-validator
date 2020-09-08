@@ -2,7 +2,6 @@ package cz.mvcr.datavalidator.cli;
 
 import cz.mvcr.datavalidator.cli.writer.StdOutReportWriter;
 import cz.mvcr.datavalidator.core.FileReport;
-import cz.mvcr.datavalidator.core.DataValidator;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -14,43 +13,61 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class AppEntry {
 
     private static final Logger LOG = LoggerFactory.getLogger(AppEntry.class);
 
     public static void main(String[] args) {
-        (new AppEntry()).run(args);
+        Instant start = Instant.now();
+        int returnCode;
+        try {
+            returnCode = (new AppEntry()).run(args);
+        } catch (Throwable t) {
+            LOG.error("Unexpected execution failure.", t);
+            returnCode = 1;
+        }
+        LOG.debug("Execution finished in {} s",
+                Duration.between(start, Instant.now()).toSeconds());
+        System.exit(returnCode);
     }
 
-    protected void run(String[] args) {
-        LOG.info("Running with arguments: {}", String.join(" ", args));
-        //
+    protected int run(String[] args) {
+        setUtf8OutputEncoding();
         Configuration configuration;
         try {
             CommandLine commandLine = parseArgs(args);
             configuration = loadConfiguration(commandLine);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            return;
+            System.out.println("Can't load configuration.");
+            return 1;
         }
-        List<File> files;
-        try {
-            files = listFiles(configuration);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            return;
+        List<FileReport> reports = new ArrayList<>();
+        FileValidator validator = new FileValidator(configuration);
+        for (File file : configuration.paths) {
+            LOG.debug("Validating input '{}'", file);
+            reports.addAll(validator.validateFile(file));
         }
-        List<FileReport> reports = validateFiles(configuration, files);
+        LOG.debug("Validation completed.");
         (new StdOutReportWriter()).writeReports(reports);
+        return reports.size() > 0 ? 1 : 0;
+    }
+
+    private void setUtf8OutputEncoding() {
+        System.setOut(new PrintStream(
+                new FileOutputStream(FileDescriptor.out),
+                true,
+                StandardCharsets.UTF_8));
     }
 
     private CommandLine parseArgs(String[] args) throws ParseException {
@@ -109,49 +126,5 @@ public class AppEntry {
         return configuration;
     }
 
-    private List<File> listFiles(Configuration configuration)
-            throws IOException {
-        List<File> result = new ArrayList<>();
-        for (File file : configuration.paths) {
-            if (!file.isDirectory()) {
-                result.add(file);
-            }
-            int depth = configuration.recursive ? Integer.MAX_VALUE : 1;
-            try (Stream<Path> paths = Files.walk(file.toPath(), depth)) {
-                paths.filter(Files::isRegularFile)
-                        .map(Path::toFile)
-                        .forEach(result::add);
-            }
-        }
-        return result;
-    }
-
-    private List<FileReport> validateFiles(
-            Configuration configuration, List<File> files) {
-        List<FileReport> result = new ArrayList<>();
-        for (Configuration.Rule rule : configuration.rules) {
-            for (File file : files) {
-                result.addAll(validateFile(rule, file));
-            }
-        }
-        return result;
-    }
-
-    private List<FileReport> validateFile(Configuration.Rule rule, File file) {
-        for (String filePattern : rule.filePatterns) {
-            if (!file.getAbsolutePath().matches(filePattern)) {
-                continue;
-            }
-            List<FileReport> result = new ArrayList<>();
-            for (DataValidator validator : rule.validators) {
-                validator.validate(file)
-                        .stream()
-                        .map(report -> FileReport.file(report, file))
-                        .forEach(result::add);
-            }
-            return result;
-        }
-        return Collections.emptyList();
-    }
 
 }

@@ -27,7 +27,7 @@ public class JsonLdSyntaxValidatorTest {
 
     @Test
     public void invalidFile002() {
-        RdfSyntaxJenaValidator validator = new RdfSyntaxJenaValidator();
+        JsonLdSyntaxTitaniumValidator validator = new JsonLdSyntaxTitaniumValidator();
         List<Report> actual = validator.validate(
                 TestUtils.fileFromResource("syntax/invalid-002.jsonld"));
         Assertions.assertEquals(1, actual.size());
@@ -39,6 +39,15 @@ public class JsonLdSyntaxValidatorTest {
         List<Report> actual = validator.validate(
                 TestUtils.fileFromResource("syntax/invalid-003.ttl"));
         Assertions.assertEquals(1, actual.size());
+    }
+
+    @Test
+    public void validJsonLdV11File004() {
+        JsonLdSyntaxTitaniumValidator validator = new JsonLdSyntaxTitaniumValidator();
+        List<Report> actual = validator.validate(
+                TestUtils.fileFromResource(
+                        "syntax/valid-jsonld-v11-004.jsonld"));
+        Assertions.assertEquals(0, actual.size());
     }
 
 }

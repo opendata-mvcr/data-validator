@@ -19,14 +19,14 @@ public class RdfSchemaShaclJenaValidatorTest {
     }
 
     @Test
-    public void invalidFile000() throws Exception {
+    public void invalidFile000() {
         Validator validator = new Validator();
         validator.loadShaclFromLocation(
                 TestUtils.fileFromResource("schema/shacl-000.ttl")
                         .getAbsolutePath());
         List<Report> actual = validator.validate(
                 TestUtils.fileFromResource("schema/invalid-000.jsonld"));
-        Assertions.assertEquals(1, actual.size());
+        Assertions.assertEquals(2, actual.size());
     }
 
 }

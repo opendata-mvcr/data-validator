@@ -35,7 +35,7 @@ public class JsonSchemaEveritValidatorTest {
                 TestUtils.fileFromResource("schema/schema-001.json").toPath()));
         List<Report> actual = validator.validate(
                 TestUtils.fileFromResource("schema/invalid-001.json"));
-        Assertions.assertEquals(1, actual.size());
+        Assertions.assertEquals(2, actual.size());
     }
 
 }
