@@ -29,6 +29,13 @@ public class ConfigurationAdapter {
         return (new ConfigurationAdapter())
                 .onConfiguration(resource, statements);
     }
+    
+    public static Configuration load(File file) throws IOException {
+        List<Statement> statements = RdfAdapter.asStatements(file);
+        Resource resource = getConfiguration(statements);
+        return (new ConfigurationAdapter())
+                .onConfiguration(resource, statements);
+    }
 
     private static Resource getConfiguration(List<Statement> statements)
             throws IOException {
@@ -48,7 +55,6 @@ public class ConfigurationAdapter {
     }
 
     private final Map<Resource, DataValidator> validatorMap = new HashMap<>();
-
 
     private Configuration onConfiguration(
             Resource resource, List<Statement> statements) throws IOException {
@@ -98,6 +104,8 @@ public class ConfigurationAdapter {
                         onRuleValidator(result, statement, statements);
                     }
                     break;
+                default:
+                    break;
             }
         }
         return result;
@@ -118,13 +126,6 @@ public class ConfigurationAdapter {
             validatorMap.put(resource, validator);
         }
         rule.validators.add(validatorMap.get(resource));
-    }
-
-    public static Configuration load(File file) throws IOException {
-        List<Statement> statements = RdfAdapter.asStatements(file);
-        Resource resource = getConfiguration(statements);
-        return (new ConfigurationAdapter())
-                .onConfiguration(resource, statements);
     }
 
     public static Configuration createDefaultConfiguration() {
