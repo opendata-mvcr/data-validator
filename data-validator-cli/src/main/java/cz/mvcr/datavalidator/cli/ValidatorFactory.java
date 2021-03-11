@@ -58,7 +58,7 @@ public class ValidatorFactory {
     private static DataValidator createJacksonJsonSyntax() {
         return new JsonSyntaxJacksonValidator();
     }
-w
+
     private static DataValidator createDom4jXmlSyntax() {
         return new XmlSyntaxDom4jValidator();
     }
