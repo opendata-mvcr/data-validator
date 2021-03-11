@@ -50,6 +50,7 @@ public class AppEntry {
             configuration = loadConfiguration(commandLine);
         } catch (Exception ex) {
             System.out.println("Can't load configuration.");
+            LOG.info("Exception.", ex);
             return 1;
         }
         List<FileReport> reports = new ArrayList<>();
@@ -107,7 +108,13 @@ public class AppEntry {
             throws IOException {
         Configuration configuration;
         if (cmd.hasOption("configuration")) {
-            URL url = new URL(cmd.getOptionValue("configuration"));
+            String urlAsStr = cmd.getOptionValue("configuration");
+            URL url;
+            if (urlAsStr.toLowerCase().startsWith(".")) {
+                url = new File(urlAsStr).toURI().toURL();
+            } else {
+                url = new URL(urlAsStr);
+            }
             configuration = ConfigurationAdapter.load(url);
         } else {
             configuration = ConfigurationAdapter.createDefaultConfiguration();
@@ -125,6 +132,5 @@ public class AppEntry {
         }
         return configuration;
     }
-
 
 }
