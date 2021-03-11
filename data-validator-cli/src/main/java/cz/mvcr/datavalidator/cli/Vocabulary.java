@@ -37,11 +37,13 @@ public class Vocabulary {
     public static final String XercesXmlSchema =
             prefix + "XercesXmlSchema";
 
-
     public static final String JenaRdfSchaclSchema =
             prefix + "JenaRdfSchaclSchema";
 
     public static final String TitaniumJsonLdSyntax =
             prefix + "TitaniumJsonLdSyntax";
+
+    public static final String RdfNotEmpty =
+            prefix + "JenaRdfNotEmpty";
 
 }

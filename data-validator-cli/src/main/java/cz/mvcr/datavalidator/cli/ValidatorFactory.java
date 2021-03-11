@@ -3,6 +3,7 @@ package cz.mvcr.datavalidator.cli;
 import cz.mvcr.datavalidator.core.DataValidator;
 import cz.mvcr.datavalidator.json.schema.JsonSchemaEveritValidator;
 import cz.mvcr.datavalidator.json.syntax.JsonSyntaxJacksonValidator;
+import cz.mvcr.datavalidator.rdf.content.RdfContentNotEmptyJenaValidator;
 import cz.mvcr.datavalidator.rdf.schema.RdfSchemaShaclJenaValidator;
 import cz.mvcr.datavalidator.rdf.syntax.JsonLdSyntaxTitaniumValidator;
 import cz.mvcr.datavalidator.rdf.syntax.RdfSyntaxJenaValidator;
@@ -45,6 +46,8 @@ public class ValidatorFactory {
                     return createJenaSchemaShacl(resource, statements);
                 case Vocabulary.TitaniumJsonLdSyntax:
                     return createTitaniumJsonLdSyntax();
+                case Vocabulary.RdfNotEmpty:
+                    return createRdfNotEmpty();
                 default:
                     break;
             }
@@ -55,7 +58,7 @@ public class ValidatorFactory {
     private static DataValidator createJacksonJsonSyntax() {
         return new JsonSyntaxJacksonValidator();
     }
-
+w
     private static DataValidator createDom4jXmlSyntax() {
         return new XmlSyntaxDom4jValidator();
     }
@@ -87,6 +90,10 @@ public class ValidatorFactory {
 
     private static DataValidator createTitaniumJsonLdSyntax() {
         return new JsonLdSyntaxTitaniumValidator();
+    }
+
+    private static  DataValidator createRdfNotEmpty() {
+        return new RdfContentNotEmptyJenaValidator();
     }
 
 }

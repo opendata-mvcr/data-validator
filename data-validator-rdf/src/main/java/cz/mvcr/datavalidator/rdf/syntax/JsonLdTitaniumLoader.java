@@ -24,6 +24,10 @@ public class JsonLdTitaniumLoader {
     private Model model;
 
     public Graph loadGraph(File file) throws JsonLdError {
+        return loadModel(file).getGraph();
+    }
+
+    public Model loadModel(File file) throws JsonLdError {
         ToRdfApi api = JsonLd.toRdf(file.toURI());
         RdfDataset dataset = api.get();
         model = ModelFactory.createDefaultModel();
@@ -34,7 +38,7 @@ public class JsonLdTitaniumLoader {
                     createValue(quad.getObject()));
             model.add(statement);
         }
-        return model.getGraph();
+        return model;
     }
 
     private Resource createResource(RdfResource resource) {
