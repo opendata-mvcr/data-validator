@@ -4,4 +4,5 @@ include "data-validator-core",
         "data-validator-json",
         "data-validator-xml",
         "data-validator-rdf",
+		"data-validator-csvw",
         "data-validator-cli"

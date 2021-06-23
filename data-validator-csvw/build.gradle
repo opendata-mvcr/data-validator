@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+java {
+    jar {
+        archiveAppendix.set('csvw')
+        dependencies {
+            implementation project(":data-validator-core")
+            implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+        }
+    }
+}
