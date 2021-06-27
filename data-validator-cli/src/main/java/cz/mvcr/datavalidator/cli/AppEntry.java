@@ -108,14 +108,13 @@ public class AppEntry {
             throws IOException {
         Configuration configuration;
         if (cmd.hasOption("configuration")) {
-            String urlAsStr = cmd.getOptionValue("configuration");
-            URL url;
-            if (urlAsStr.toLowerCase().startsWith(".")) {
-                url = new File(urlAsStr).toURI().toURL();
+            String parameter = cmd.getOptionValue("configuration");
+            if (parameter.startsWith("file://")) {
+                String path = parameter.substring("file://".length());
+                configuration = ConfigurationAdapter.load(new File(path));
             } else {
-                url = new URL(urlAsStr);
+                configuration = ConfigurationAdapter.load(new URL(parameter));
             }
-            configuration = ConfigurationAdapter.load(url);
         } else {
             configuration = ConfigurationAdapter.createDefaultConfiguration();
         }
